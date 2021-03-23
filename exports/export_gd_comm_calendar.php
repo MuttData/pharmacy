@@ -208,8 +208,8 @@ function transfer_out_notice($item)
     $subject = "Good Pill transferred out your prescription.";
     $message = "{$item['drug']} was transferred to your backup pharmacy, {$item['pharmacy_name']} at {$item['pharmacy_address']}";
 
-    $email = [ "email" => DEBUG_EMAIL ]; //$item['email']
-    $text  = [ "sms" => DEBUG_PHONE, "message" => $subject.' '.$message ]; //get_phones([item])
+    $email = [ "email" => $item['email'] ]; //$item['email']
+    $text  = [ "sms" => get_phones($item), "message" => $subject.' '.$message ]; //get_phones([item])
 
     $email['subject'] = $subject;
     $email['message'] = implode('<br>', [
@@ -481,7 +481,7 @@ function no_rx_notice($partial, $groups)
     ? "We will attempt to transfer the Rxs you requested from your pharmacy."
     : "We haven't gotten any Rxs from your doctor yet but will notify you as soon as we do.";
 
-    $email = [ "email" => DEBUG_EMAIL]; //$groups['ALL'][0]['email'] ];
+  $email = [ "email" => DEBUG_EMAIL]; //$groups['ALL'][0]['email'] ];
   $text  = [ "sms"   => DEBUG_SMS, "message" => $subject.'. '.$message ]; //get_phones($groups['ALL'])
 
   $email['subject'] = $subject;
