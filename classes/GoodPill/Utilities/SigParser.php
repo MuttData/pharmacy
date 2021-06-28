@@ -454,13 +454,11 @@ class SigParser
                 // $this->scores[] = 0.8;
             }
 
-            // NOTE: Gets the LAST number from a particular frequency.
-            // Because it gives better results
-            // "1 to 2 days" => 2.
             $new_freq = 1;
-            preg_match('/(\d+)(?!.*\d)(.*)/i', $freq, $match);
-            if ($match AND $match[1]) {
-                $new_freq = (float)$match[1];
+            preg_match_all('/\d+.?(\d+)?/', $freq, $match);
+            if ($match AND count($match[0]) > 0) {
+                // Get the average frequency of the range
+                $new_freq = array_sum($match[0]) / count($match[0]);
             }
 
             // Hours match
@@ -524,6 +522,7 @@ class SigParser
             if (!$match OR array_key_exists($match[3], $equivalences)) {
                 continue;
             }
+
             $new_unit = trim($match[3]);
             if (in_array($new_unit, ['TAB', 'CAP'])) {
                 continue;
@@ -547,35 +546,40 @@ class SigParser
         foreach ($dosages as $dose) {
             // Gets ALL numbers from a particular dosage.
             // "1 to 2 capsules" => 2.
-            preg_match('/((?:\d*\.)?\d+)(?!.*((?:\d*\.)?\d+))(.*)/i', $dose, $match);
-
-            if ($match AND $match[1]) {
-                $sig_qty = (float) $match[1];
-                $sig_unit = trim($match[3]);
-
-                $found_unit = false;
-                // If the unit matches, normalize it with the weight value.
-                foreach ($equivalences as $unit => $value) {
-                    if ($unit AND preg_match('/'.preg_quote($unit).'/i', $sig_unit) AND $value) {
-                        $parsed['sig_qty'] += $sig_qty / $value;
-                        $found_unit = true;
-                        break;
-                    }
-                }
-                // If no unit was found, assign the qty as is but decrease the total confidence score?
-                if (!$found_unit) {
-                    $parsed['sig_qty'] += $sig_qty;
-                    // $this->scores[] = 0.8;
-                }
-                // If no sig unit was assigned, give it the unit of the first dose
-                if (!$parsed['sig_unit']) {
-                    $parsed['sig_unit'] = $sig_unit;
-                    // $this->scores[] = 0.8;
-                }
-
-                // Take only the first dosage
-                break;
+            $dosage = 1;
+            preg_match_all('/\d+.?(\d+)?/', $dose, $match);
+            if (!$match OR count($match[0]) == 0) {
+                continue;
             }
+
+            // Get the average dosage from the split
+            $sig_qty = array_sum($match[0]) / count($match[0]);
+
+            preg_match('/((?:\d*\.)?\d+)(?!.*((?:\d*\.)?\d+))(.*)/i', $dose, $match);
+            $sig_unit = trim($match[3]);
+
+            $found_unit = false;
+            // If the unit matches, normalize it with the weight value.
+            foreach ($equivalences as $unit => $value) {
+                if ($unit AND preg_match('/'.preg_quote($unit).'/i', $sig_unit) AND $value) {
+                    $parsed['sig_qty'] += $sig_qty / $value;
+                    $found_unit = true;
+                    break;
+                }
+            }
+            // If no unit was found, assign the qty as is but decrease the total confidence score?
+            if (!$found_unit) {
+                $parsed['sig_qty'] += $sig_qty;
+                // $this->scores[] = 0.8;
+            }
+            // If no sig unit was assigned, give it the unit of the first dose
+            if (!$parsed['sig_unit']) {
+                $parsed['sig_unit'] = $sig_unit;
+                // $this->scores[] = 0.8;
+            }
+
+            // Take only the first dosage
+            break;
         }
 
         // If no dosage was found, return 1 and decrease the total confidence score?
