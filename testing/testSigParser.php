@@ -10,10 +10,14 @@ require_once 'helpers/helper_laravel.php';
 use GoodPill\Utilities\SigParser;
 
 $correct_pairs = [
-
-    // TODO: Check for repeated wording in "multiple sigs"
-    // "1 tablet by mouth daily; TAKE ONE TABLET BY MOUTH ONCE DAILY" => 1,
-    
+    "1 tablet by mouth daily; TAKE ONE TABLET BY MOUTH ONCE DAILY" => [
+        "drug_name" => "PREDNISONE 10MG TAB",
+        "expected" => [
+            "sig_qty" => DAYS_STD,
+            "sig_days" => DAYS_STD,
+            "sig_unit" => "TAB"
+        ]
+    ],
     "Take 1 tab 5 xdaily on week 1 ,1 tab 4 xdaily on week 2, 1 tab 3 xdaily on week 3, 1 tab 2 xdaily on week 4, then 1 tab daily on week 5" => [
         "drug_name" => "PREDNISONE 10MG TAB",
         "expected" => [
@@ -299,6 +303,326 @@ $correct_pairs = [
         "expected" => [
             "sig_qty" => 28,
             "sig_days" => 7,
+            "sig_unit" => "TAB"
+        ]
+    ],
+    "100 MG PO BID" => [
+        "drug_name" => "METOPROLOL SUCC ER 100MG TAB",
+        "expected" => [
+            "sig_qty" => 180.0000000,
+            "sig_days" => 90.0000,
+            "sig_unit" => "TAB"
+        ]
+    ],
+    "50 MG PO BID" => [
+        "drug_name" => "METOPROLOL SUCC ER 50MG TAB",
+        "expected" => [
+            "sig_qty" => 180.0000000,
+            "sig_days" => 90.0000,
+            "sig_unit" => "TAB"
+        ]
+    ],
+    "Take 1 tablet by mouth 3 times a day" => [
+        "drug_name" => "PROPRANOLOL 10MG TAB",
+        "expected" => [
+            "sig_qty" => 270.0000000,
+            "sig_days" => 90.0000,
+            "sig_unit" => "TAB"
+        ]
+    ],
+    "Take 1 tablet by mouth twice a day" => [
+        "drug_name" => "HYDRALAZINE 100MG TAB",
+        "expected" => [
+            "sig_qty" => 180.0000000,
+            "sig_days" => 90.0000,
+            "sig_unit" => "TAB"
+        ]
+    ],
+    "Take 1 tablet by mouth 3 times a day" => [
+        "drug_name" => "KEPPRA 1,000MG TAB",
+        "expected" => [
+            "sig_qty" => 270.0000000,
+            "sig_days" => 90.0000,
+            "sig_unit" => "TAB"
+        ]
+    ],
+    "Take 2 capsules by mouth 3 times a day" => [
+        "drug_name" => "PHENYTOIN SOD EXT 100MG CAP",
+        "expected" => [
+            "sig_qty" => 540.0000000,
+            "sig_days" => 90.0000,
+            "sig_unit" => "CAP"
+        ]
+    ],
+    "1 capsule as needed every 6 hrs Orally 90 days" => [
+        "drug_name" => "VISTARIL 50MG CAP",
+        "expected" => [
+            "sig_qty" => 360.0000000,
+            "sig_days" => 90.0000,
+            "sig_unit" => "CAP"
+        ]
+    ],
+    "1 tablet at bedtime Once a day Orally 90 days" => [
+        "drug_name" => "AMITRIPTYLINE 25MG TAB",
+        "expected" => [
+            "sig_qty" => 90.0000000,
+            "sig_days" => 90.0000,
+            "sig_unit" => "TAB"
+        ]
+    ],
+    "Take 1& 1/2 tablet by mouth twice a day" => [
+        "drug_name" => "OXCARBAZEPINE 300MG TAB",
+        "expected" => [
+            "sig_qty" => 270.0000000,
+            "sig_days" => 90.0000,
+            "sig_unit" => "TAB"
+        ]
+    ],
+    "TAKE 2 CAPSULES BY MOUTH THREE TIMES A DAY" => [
+        "drug_name" => "GABAPENTIN 400MG CAP",
+        "expected" => [
+            "sig_qty" => 540.0000000,
+            "sig_days" => 90.0000,
+            "sig_unit" => "CAP"
+        ]
+    ],
+    "1 tab PO BID" => [
+        "drug_name" => "ACID REDUCER 20MG TAB",
+        "expected" => [
+            "sig_qty" => 180.0000000,
+            "sig_days" => 90.0000,
+            "sig_unit" => "TAB"
+        ]
+    ],
+    "Take 3 tablets by mouth in the morning" => [
+        "drug_name" => "BUPROPION SR 100MG TAB",
+        "expected" => [
+            "sig_qty" => 270.0000000,
+            "sig_days" => 90.0000,
+            "sig_unit" => "TAB"
+        ]
+    ],
+    "Take 2 tablets (250 mcg total) by mouth daily. Replaces 112 mcg" => [
+        "drug_name" => "LEVOTHYROXINE 125MCG TAB",
+        "expected" => [
+            "sig_qty" => 180.0000000,
+            "sig_days" => 90.0000,
+            "sig_unit" => "TAB"
+        ]
+    ],
+    "Take 3 tablet by mouth at bedtime as needed take 300 mg at bedtime." => [
+        "drug_name" => "TRAZODONE 100MG TAB",
+        "expected" => [
+            "sig_qty" => 270.0000000,
+            "sig_days" => 90.0000,
+            "sig_unit" => "TAB"
+        ]
+    ],
+    "1.5 tab(s) PO BID" => [
+        "drug_name" => "TOPROL XL 50MG TAB",
+        "expected" => [
+            "sig_qty" => 270.0000000,
+            "sig_days" => 90.0000,
+            "sig_unit" => "TAB"
+        ]
+    ],
+    "Take 1 tablet by mouth in the morning and take 1/2 tablet by mouth at bedtime" => [
+        "drug_name" => "LISINOPRIL 20MG TAB",
+        "expected" => [
+            "sig_qty" => 135.0000000,
+            "sig_days" => 90.0000,
+            "sig_unit" => "TAB"
+        ]
+    ],
+    "Take 1 tab bid" => [
+        "drug_name" => "FERROUS SULF EC 324MG TAB",
+        "expected" => [
+            "sig_qty" => 180.0000000,
+            "sig_days" => 90.0000,
+            "sig_unit" => "TAB"
+        ]
+    ],
+    "TAKE ONE TABLET BY MOUTH ONE TIME DAILY" => [
+        "drug_name" => "LISINOPRIL 10MG TAB",
+        "expected" => [
+            "sig_qty" => 90.0000000,
+            "sig_days" => 90.0000,
+            "sig_unit" => "TAB"
+        ]
+    ],
+    "1 tab(s) PO BID,x90 day(s)" => [
+        "drug_name" => "LAMICTAL 100MG TAB",
+        "expected" => [
+            "sig_qty" => 180.0000000,
+            "sig_days" => 90.0000,
+            "sig_unit" => "TAB"
+        ]
+    ],
+    "Take 1 tablet by mouth once a day Take with 60 mg ER tablet" => [
+        "drug_name" => "NIFEDIPINE ER 30MG TAB",
+        "expected" => [
+            "sig_qty" => 90.0000000,
+            "sig_days" => 90.0000,
+            "sig_unit" => "TAB"
+        ]
+    ],
+    "Take 1 tablet by mouth every 12 hours FOR 10 DAYS" => [
+        "drug_name" => "DOXYCYCLINE HYCLATE 100MG TAB",
+        "expected" => [
+            "sig_qty" => 20.0000000,
+            "sig_days" => 10.0000,
+            "sig_unit" => "TAB"
+        ]
+    ],
+    "Take 1 tablet by mouth twice a day 30 minutes before meals" => [
+        "drug_name" => "GLIPIZIDE 5MG TAB",
+        "expected" => [
+            "sig_qty" => 180.0000000,
+            "sig_days" => 90.0000,
+            "sig_unit" => "TAB"
+        ]
+    ],
+    "Take 1 capsule by mouth once daily along with 150mg capsules" => [
+        "drug_name" => "VENLAFAXINE ER 75MG CAP",
+        "expected" => [
+            "sig_qty" => 90.0000000,
+            "sig_days" => 90.0000,
+            "sig_unit" => "CAP"
+        ]
+    ],
+    "Take 1 tablet by mouth once daily along with 200mcg" => [
+        "drug_name" => "LEVOTHYROXINE 75MCG TAB",
+        "expected" => [
+            "sig_qty" => 90.0000000,
+            "sig_days" => 90.0000,
+            "sig_unit" => "TAB"
+        ]
+    ],
+    "1 tablet TID PRN Orally 90" => [
+        "drug_name" => "CYCLOBENZAPRINE 10MG TAB",
+        "expected" => [
+            "sig_qty" => 270.0000000,
+            "sig_days" => 90.0000,
+            "sig_unit" => "TAB"
+        ]
+    ],
+    "Take 1 tablet by mouth at onset of migraine, may repeat once in 2 hours/ max 2 tabs per day" => [
+        "drug_name" => "IMITREX 100MG TAB",
+        "expected" => [
+            "sig_qty" => 180.0000000,
+            "sig_days" => 90.0000,
+            "sig_unit" => "TAB"
+        ]
+    ],
+    "Take 1 capsule by mouth every morning with meals with 75mg caps=total of 225mg" => [
+        "drug_name" => "VENLAFAXINE ER 150MG CAP",
+        "expected" => [
+            "sig_qty" => 90.0000000,
+            "sig_days" => 90.0000,
+            "sig_unit" => "CAP"
+        ]
+    ],
+    "Take 1 tablet by mouth at bedtime with quetiapine 200mg tabs" => [
+        "drug_name" => "QUETIAPINE FUMARATE 100MG TAB",
+        "expected" => [
+            "sig_qty" => 90.0000000,
+            "sig_days" => 90.0000,
+            "sig_unit" => "TAB"
+        ]
+    ],
+    "2 po q day" => [
+        "drug_name" => "DULOXETINE DR 60MG CAP",
+        "expected" => [
+            "sig_qty" => 180.0000000,
+            "sig_days" => 90.0000,
+            "sig_unit" => "CAP"
+        ]
+    ],
+    "1 (one) Tablet qam and 2 tabs qpm" => [
+        "drug_name" => "NAMENDA 10MG TAB",
+        "expected" => [
+            "sig_qty" => 270.0000000,
+            "sig_days" => 90.0000,
+            "sig_unit" => "TAB"
+        ]
+    ],
+    "1 tablet tid prn for spasms Orally 30 day(s)" => [
+        "drug_name" => "ZANAFLEX 4MG TAB",
+        "expected" => [
+            "sig_qty" => 90.0000000,
+            "sig_days" => 30.0000,
+            "sig_unit" => "TAB"
+        ]
+    ],
+    "Take 1 tablet (25 mg total) by mouth 1 (one) time each day with dinner. Take 1/2 tablet (12.5mg) by mouth one time each day with dinner." => [
+        "drug_name" => "METOPROLOL TARTRATE 25MG TAB",
+        "expected" => [
+            "sig_qty" => 135.0000000,
+            "sig_days" => 90.0000,
+            "sig_unit" => "TAB"
+        ]
+    ],
+    "1 DAILY" => [
+        "drug_name" => "LASIX 40MG TAB",
+        "expected" => [
+            "sig_qty" => 90.0000000,
+            "sig_days" => 90.0000,
+            "sig_unit" => "TAB"
+        ]
+    ],
+    "Take 1 capsule by mouth once daily FOR DEPRESSION-TAKE WITH 75 MG" => [
+        "drug_name" => "VENLAFAXINE ER 150MG CAP",
+        "expected" => [
+            "sig_qty" => 90.0000000,
+            "sig_days" => 90.0000,
+            "sig_unit" => "CAP"
+        ]
+    ],
+    "ORAL Take 1 bid" => [
+        "drug_name" => "METOPROLOL TARTRATE 25MG TAB",
+        "expected" => [
+            "sig_qty" => 180.0000000,
+            "sig_days" => 90.0000,
+            "sig_unit" => "TAB"
+        ]
+    ],
+    "Take 1 capsule once a day take along with 40mg for total of 60mg" => [
+        "drug_name" => "PROZAC 20MG PULVULE",
+        "expected" => [
+            "sig_qty" => 90.0000000,
+            "sig_days" => 90.0000,
+            "sig_unit" => "PULVULE"
+        ]
+    ],
+    "1 tablet at bedtime as needed Once a day Orally 30 days" => [
+        "drug_name" => "TRAZODONE 50MG TAB",
+        "expected" => [
+            "sig_qty" => 30.0000000,
+            "sig_days" => 30.0000,
+            "sig_unit" => "TAB"
+        ]
+    ],
+    "Take 1 tablet by mouth every 8 hours as needed FOR MILD PAIN 1-3 ON A SCALE OUT OF 10" => [
+        "drug_name" => "IBUPROFEN 800MG TAB",
+        "expected" => [
+            "sig_qty" => 270.0000000,
+            "sig_days" => 90.0000,
+            "sig_unit" => "TAB"
+        ]
+    ],
+    "ORAL Take 1 tid" => [
+        "drug_name" => "BUSPIRONE 15MG TAB",
+        "expected" => [
+            "sig_qty" => 270.0000000,
+            "sig_days" => 90.0000,
+            "sig_unit" => "TAB"
+        ]
+    ],
+    "Take 1 tablet by mouth twice a day TO PREVENT CLOTS AND CHRONIC A.FIB" => [
+        "drug_name" => "ELIQUIS 5MG TAB",
+        "expected" => [
+            "sig_qty" => 180.0000000,
+            "sig_days" => 90.0000,
             "sig_unit" => "TAB"
         ]
     ]
